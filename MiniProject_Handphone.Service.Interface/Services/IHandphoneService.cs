@@ -13,6 +13,6 @@ namespace MiniProject_Handphone.Service.Interface.Services
         public Task<List<HandphoneData>> GetAll();
         public Task<List<HandphoneData>> GetDataByNetwork(string Network);
         public Task<bool> DeleteData(int id);
-        public Task<bool> UpdateByDeviceId(HandphoneShow model, int id);
+        public Task<bool> UpdateByDeviceId(HandphoneData model, int id);
     }
 }

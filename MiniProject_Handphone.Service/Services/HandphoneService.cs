@@ -19,15 +19,15 @@ namespace MiniProject_Handphone.Service.Services
 
         public async Task<bool> CreateNewDevice(string brand, string name, string os, string procie, int price, string[] network)
         {
-            if (await handphoneRepository.IsDeviceThere(name) == true)
+            if (await handphoneRepository.CheckDevice(name) == true)
             {
                 return false;
             }
             var result = await handphoneRepository.CreateNewDevice(brand, name, os, procie, price);
-            int DeviceId = await handphoneRepository.GetIdByName("Devices", name);
+            int DeviceId = await handphoneRepository.GetIdByName("devices", name);
             foreach(string x in network)
             {
-                int NetworkId = await handphoneRepository.GetIdByName("Network", x);
+                int NetworkId = await handphoneRepository.GetIdByName("networks", x);
                 await handphoneRepository.RelateNetworkWithDevice(DeviceId, NetworkId);
             }
             return result;
@@ -59,9 +59,22 @@ namespace MiniProject_Handphone.Service.Services
             return result;
         }
 
-        public async Task<bool> UpdateByDeviceId(HandphoneShow model, int id)
+        public async Task<bool> UpdateByDeviceId(HandphoneData model, int id)
         {
-            throw new NotImplementedException();
+            var result = await handphoneRepository.UpdateDeviceById(id, model.Brand, model.Name, model.Os, model.Procie, model.Price);
+            foreach(string x in model.Network)
+            {
+                int NetworkId = await handphoneRepository.GetIdByName("networks", x);
+                if(await handphoneRepository.CheckRelation(id, NetworkId))
+                {
+                    continue;
+                }
+                else
+                {
+                    await handphoneRepository.RelateNetworkWithDevice(id, NetworkId);
+                }
+            }
+            return true;
         }
     }
 }

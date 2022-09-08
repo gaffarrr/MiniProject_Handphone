@@ -23,7 +23,9 @@ namespace MiniProject_Handphone.Data.Repositories
 
         public async Task<bool> CreateNewDevice(string brand, string name, string os, string procie, int price)
         {
-            throw new NotImplementedException();
+            await _dbService.ModifyData("INSERT INTO devices(brand, name, os, procie, price) " +
+                "VALUES (@Brand, @Name, @Os, @Procie, @Price);", new {Brand = brand, Name = name, Os = os, Procie = procie, Price = price });
+            return true;
         }
 
         public async Task<bool> DeleteData(int id)
@@ -71,24 +73,31 @@ namespace MiniProject_Handphone.Data.Repositories
             return id;
         }
 
-        public async Task<bool> IsDeviceThere(string name)
+        public async Task<bool> CheckDevice(string name)
         {
-            throw new NotImplementedException();
+            var result = await _dbService.Check("SELECT COUNT(1) FROM devices WHERE name=@Name", new { Name = name });
+            return result;
         }
 
-        public async Task<bool> IsNetworkThere(string name)
+        public async Task<bool> CheckRelation(int IdDevice, int IdNetwork)
         {
-            throw new NotImplementedException();
+            var result = await _dbService.Check("SELECT COUNT(1) FROM device_has_nets WHERE device_id=@Device_id AND net_id=@Network_id", new { Device_id = IdDevice, Network_id = IdNetwork });
+            return result;
         }
 
-        public async Task<bool> IsRelationThere(int IdDevice, int IdNetwork)
+        public async Task<bool> RelateNetworkWithDevice(int DeviceId, int NetworkId)
         {
-            throw new NotImplementedException();
+            await _dbService.ModifyData("INSERT INTO device_has_nets " +
+                "VALUES (@IdDevice,@IdNetwork);", new { IdDevice = DeviceId, IdNetwork = NetworkId });
+            return true;
         }
 
-        public async Task<bool> RelateNetworkWithDevice(int IdDevice, int IdNetwork)
+        public async Task<bool> UpdateDeviceById(int id, string brand, string name, string os, string procie, int price)
         {
-            throw new NotImplementedException();
+            await _dbService.ModifyData("UPDATE devices " +
+                "set brand=@Brand, name=@Name, os=@Os, procie=@Procie, price=@Price " +
+                "where id=@Id;", new {Id=id, Brand = brand, Name = name, Os = os, Procie = procie, Price = price });
+            return true;
         }
     }
 }

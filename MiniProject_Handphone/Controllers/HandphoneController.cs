@@ -20,11 +20,11 @@ namespace MiniProject_Handphone.Controllers
         }
 
         [HttpPost]
-        /*public async Task<IActionResult> Create([FromBody] Handphone model)
+        public async Task<IActionResult> Create([FromBody] HandphoneData model)
         {
-            *//*var result = await handphoneService.Create(model);
-            return Ok(result);*//*
-        }*/
+            var result = await handphoneService.CreateNewDevice(model.Brand, model.Name,model.Os,model.Procie,model.Price,model.Network.ToArray());
+            return Ok(result);
+        }
 
         [HttpGet]
         public async Task<List<HandphoneData>> GetAll()
@@ -44,6 +44,13 @@ namespace MiniProject_Handphone.Controllers
         public async Task<IActionResult> DeleteData(int id)
         {
             var result = await handphoneService.DeleteData(id);
+            return Ok(result);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Update([FromBody]HandphoneData model, int id)
+        {
+            var result = await handphoneService.UpdateByDeviceId(model, id);
             return Ok(result);
         }
     }
