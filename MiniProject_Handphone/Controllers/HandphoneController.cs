@@ -26,10 +26,10 @@ namespace MiniProject_Handphone.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public async Task<List<HandphoneData>> GetAll()
+        [HttpGet("{num:int}")]
+        public async Task<List<HandphoneData>> GetAll(int num = 1)
         {
-            var result = await handphoneService.GetAll();
+            var result = await handphoneService.GetAll(num);
             return result;
         }
 

@@ -35,14 +35,15 @@ namespace MiniProject_Handphone.Data.Repositories
             return true;
         }
 
-        public async Task<List<HandphoneData>> GetAll()
+        public async Task<List<HandphoneData>> GetAll(int page)
         {
             var result = await _dbService.GetList<HandphoneData>
                 ("SELECT b.id, b.brand, b.name, b.os, b.procie, b.price " +
                 "FROM devices b " +
                 "LEFT JOIN device_has_nets d ON b.id=d.device_id " +
                 "LEFT JOIN networks n ON d.net_id=n.id " +
-                "GROUP BY b.id limit 10 offset 0;", new { });
+                "GROUP BY b.id " +
+                "limit 10 offset @page", new { page=page });
             return result;
         }
 

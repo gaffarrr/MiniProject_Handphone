@@ -39,9 +39,14 @@ namespace MiniProject_Handphone.Service.Services
             return result;
         }
 
-        public async Task<List<HandphoneData>> GetAll()
+        public async Task<List<HandphoneData>> GetAll(int num)
         {
-            var result = await handphoneRepository.GetAll();
+            int Page = (num - 1) * 10;
+            if (Page < 0)
+            {
+                Page = 0;
+            }
+            var result = await handphoneRepository.GetAll(Page);
             foreach(var x in result)
             {
                 x.Network = await handphoneRepository.GetAllNetworks(await handphoneRepository.GetIdByName("devices", x.Name));

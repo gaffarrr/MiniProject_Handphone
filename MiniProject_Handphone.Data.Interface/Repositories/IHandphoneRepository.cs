@@ -10,8 +10,7 @@ namespace MiniProject_Handphone.Data.Interface.Repositories
     public interface IHandphoneRepository
     {
         public Task<bool> CreateNewDevice(string brand, string name, string os, string procie, int price);
-        public Task<List<HandphoneData>> GetAll();
-
+        public Task<List<HandphoneData>> GetAll(int page);
         public Task<bool> DeleteData(int id);
         public Task<List<HandphoneData>> GetDataByNetwork(string Network);
         public Task<bool> CheckDevice(string name);
